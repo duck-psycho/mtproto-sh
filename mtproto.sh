@@ -3,6 +3,17 @@ set -euo pipefail
 
 CONTAINER_NAME="mtproto-proxy"
 
+prompt() {
+  local var_name=$1
+  local prompt_text=$2
+  local default=$3
+  if [[ -e /dev/tty ]]; then
+    read -r -e -p "$prompt_text" -i "$default" "$var_name" </dev/tty
+  else
+    printf -v "$var_name" '%s' "$default"
+  fi
+}
+
 echo "MTProto proxy(nineseconds/mtg) setup script."
 
 if ! command -v docker &> /dev/null; then
@@ -11,9 +22,9 @@ if ! command -v docker &> /dev/null; then
 fi
 
 echo "If you don't understand the options, use the defaults."
-read -e -p "Domain for TLS disguise (SNI): " -i "google.com" DOMAIN
-read -e -p "Host TCP port for MTProto: " -i "443" PORT
-read -e -p "IP address of DNS-over-HTTPS server: " -i "1.1.1.1" DNS_IP
+prompt DOMAIN "Domain for TLS disguise (SNI): " "google.com"
+prompt PORT "Host TCP port for MTProto: " "443"
+prompt DNS_IP "IP address of DNS-over-HTTPS server: " "1.1.1.1"
 
 docker pull -q nineseconds/mtg:2 >/dev/null
 SECRET=$(docker run --rm nineseconds/mtg:2 generate-secret --hex "${DOMAIN}")
