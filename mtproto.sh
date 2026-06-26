@@ -47,9 +47,9 @@ echo "Starting the proxy container. This may take a moment, please wait..."
 docker run -d \
   --name "${CONTAINER_NAME}" \
   --restart unless-stopped \
-  -p "${PORT}:${PORT}" \
+  -p "${PORT}:443 \
   nineseconds/mtg:2 \
-  simple-run -n "${DNS_IP}" -i prefer-ipv4 "0.0.0.0:${PORT}" "${SECRET}" >/dev/null
+  simple-run -n "${DNS_IP}" -i prefer-ipv4 0.0.0.0:443 "${SECRET}" >/dev/null
 
 ready=false
 for _ in {1..30}; do
