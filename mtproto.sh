@@ -14,6 +14,17 @@ prompt() {
   fi
 }
 
+show_qrcode() {
+  local proxy_url=$1
+  if command -v curl &> /dev/null; then
+    curl -fsSL https://qrcode.show -d "${proxy_url}"
+  elif command -v wget &> /dev/null; then
+    wget -qO- --post-data="${proxy_url}" https://qrcode.show
+  else
+    echo "Install curl or wget to display the QR code." >&2
+  fi
+}
+
 echo "MTProto proxy(nineseconds/mtg) setup script."
 
 if ! command -v docker &> /dev/null; then
@@ -81,4 +92,4 @@ print("tg://proxy?" + query)
 echo ""
 echo "Telegram proxy link: ${PROXY_URL}"
 echo ""
-curl https://qrcode.show -d "${PROXY_URL}"
+show_qrcode "${PROXY_URL}"

@@ -6,9 +6,11 @@ A script to quickly deploy a Telegram MTProto proxy in Docker using [nineseconds
 
 - [Docker](https://github.com/docker/docker-install)
 - Python 3 (used to build the `tg://proxy` link)
-- `curl` (for the QR code at the end; install separately if you launch via `wget`)
+- `curl` or `wget` (used to display the QR code at the end)
 
 ## Quick start
+
+Run either command from a terminal:
 
 ### curl
 
@@ -26,9 +28,11 @@ The script will prompt for three options (press `Enter` to accept the defaults):
 
 | Option | Default | Description |
 |---|---|---|
-| Domain (SNI) | `google.com` | Domain used for TLS disguise |
+| Domain (SNI) | `google.com` | FakeTLS hostname used for domain fronting |
 | Port | `443` | Host TCP port |
-| DoH IP | `1.1.1.1` | DNS-over-HTTPS server IP |
+| DoH IP | `1.1.1.1` | DoH resolver IP used by the proxy |
+
+In non-interactive environments (no TTY), defaults are used automatically.
 
 When finished, the script prints a `tg://proxy?...` link and a QR code in the terminal.
 
